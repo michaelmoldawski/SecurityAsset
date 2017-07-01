@@ -17,12 +17,14 @@ public class MainActivity extends AppCompatActivity {
         waitTask.execute();
     }
 
+
+
     private class WaitTask extends AsyncTask<Void, Integer, Void> {
 
         @Override
         protected Void doInBackground(Void... params) {
             try {
-                TimeUnit.MILLISECONDS.sleep(2000);
+                TimeUnit.MILLISECONDS.sleep(0);
             } catch (InterruptedException e) {
                 // Do nothing
             }
