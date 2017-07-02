@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,10 +24,10 @@ public class LogActivity extends AppCompatActivity implements
     private FirebaseAuth.AuthStateListener mAuthListener;
     private static final String TAG = "EmailPassword";
 
-    private TextView tv_main_Status;
-    private TextView tv_main_Detail;
-    private EditText et_main_mailField;
-    private EditText et_main_PasswordField;
+    private TextView tv_log_Status;
+    private TextView tv_log_Detail;
+    private EditText et_log_mailField;
+    private EditText et_log_PasswordField;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +55,10 @@ public class LogActivity extends AppCompatActivity implements
 
     private void initView() {
         // Views
-        tv_main_Status = (TextView) findViewById(R.id.status);
-        tv_main_Detail = (TextView) findViewById(R.id.detail);
-        et_main_mailField = (EditText) findViewById(R.id.field_email);
-        et_main_PasswordField = (EditText) findViewById(R.id.field_password);
+        tv_log_Status = (TextView) findViewById(R.id.status);
+        tv_log_Detail = (TextView) findViewById(R.id.detail);
+        et_log_mailField = (EditText) findViewById(R.id.field_email);
+        et_log_PasswordField = (EditText) findViewById(R.id.field_password);
 
         // Buttons
         findViewById(R.id.email_sign_in_button).setOnClickListener(this);
@@ -90,11 +89,12 @@ public class LogActivity extends AppCompatActivity implements
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        task = FirebaseAuth.getInstance().signInWithEmailAndPassword(email,password);
-                        boolean test=task.isSuccessful();
+
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
+                            Toast.makeText(LogActivity.this, "Authentication succeded.",
+                                    Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
@@ -113,23 +113,98 @@ public class LogActivity extends AppCompatActivity implements
         // [END create_user_with_email]
     }
 
+    private void signIn(String email, String password) {
+        Log.d(TAG, "signIn:" + email);
+        if (!validateForm()) {
+            return;
+        }
+
+        showProgressDialog();
+
+        // [START sign_in_with_email]
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            Toast.makeText(LogActivity.this, "Authentication succeded.",
+                                    Toast.LENGTH_SHORT).show();
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            updateUI(user);
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(LogActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                            updateUI(null);
+                        }
+
+                        // [START_EXCLUDE]
+                        if (!task.isSuccessful()) {
+                            tv_log_Status.setText("Authentication failed");
+                        }
+                        hideProgressDialog();
+                        // [END_EXCLUDE]
+                    }
+                });
+        // [END sign_in_with_email]
+    }
+
+    private void signOut() {
+        mAuth.signOut();
+        updateUI(null);
+    }
+
+    private void sendEmailVerification() {
+        // Disable button
+        findViewById(R.id.verify_email_button).setEnabled(false);
+
+        // Send verification email
+        // [START send_email_verification]
+        final FirebaseUser user = mAuth.getCurrentUser();
+        user.sendEmailVerification()
+                .addOnCompleteListener(this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        // [START_EXCLUDE]
+                        // Re-enable button
+                        findViewById(R.id.verify_email_button).setEnabled(true);
+
+                        if (task.isSuccessful()) {
+                            Toast.makeText(LogActivity.this,
+                                    "Verification email sent to " + user.getEmail(),
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.e(TAG, "sendEmailVerification", task.getException());
+                            Toast.makeText(LogActivity.this,
+                                    "Failed to send verification email.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                        // [END_EXCLUDE]
+                    }
+                });
+        // [END send_email_verification]
+    }
+
     private boolean validateForm() {
         boolean valid = true;
 
-        String email = et_main_mailField.getText().toString();
+        String email = et_log_mailField.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            et_main_mailField.setError("Required.");
+            et_log_mailField.setError("Required.");
             valid = false;
         } else {
-            et_main_mailField.setError(null);
+            et_log_mailField.setError(null);
         }
 
-        String password = et_main_PasswordField.getText().toString();
+        String password = et_log_PasswordField.getText().toString();
         if (TextUtils.isEmpty(password)) {
-            et_main_PasswordField.setError("Required.");
+            et_log_PasswordField.setError("Required.");
             valid = false;
         } else {
-            et_main_PasswordField.setError(null);
+            et_log_PasswordField.setError(null);
         }
 
         return valid;
@@ -144,11 +219,11 @@ public class LogActivity extends AppCompatActivity implements
 
 
     private void updateUI(FirebaseUser currentUser) {
-
+        //boolean test=currentUser.isEmailVerified();
         if (currentUser != null) {
-            tv_main_Status.setText(getString(R.string.emailpassword_status_fmt,
+            tv_log_Status.setText(getString(R.string.emailpassword_status_fmt,
                     currentUser.getEmail(), currentUser.isEmailVerified()));
-            tv_main_Detail.setText(getString(R.string.firebase_status_fmt, currentUser.getUid()));
+            tv_log_Detail.setText(getString(R.string.firebase_status_fmt, currentUser.getUid()));
 
             findViewById(R.id.email_password_buttons).setVisibility(View.GONE);
             findViewById(R.id.email_password_fields).setVisibility(View.GONE);
@@ -156,8 +231,8 @@ public class LogActivity extends AppCompatActivity implements
 
             findViewById(R.id.verify_email_button).setEnabled(!currentUser.isEmailVerified());
         } else {
-            tv_main_Status.setText(R.string.signed_out);
-            tv_main_Detail.setText(null);
+            tv_log_Status.setText(R.string.signed_out);
+            tv_log_Detail.setText(null);
 
             findViewById(R.id.email_password_buttons).setVisibility(View.VISIBLE);
             findViewById(R.id.email_password_fields).setVisibility(View.VISIBLE);
@@ -169,18 +244,18 @@ public class LogActivity extends AppCompatActivity implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.email_create_account_button:
-                String mail=et_main_mailField.getText().toString();
-                String pwd =  et_main_PasswordField.getText().toString();
-                createAccount(et_main_mailField.getText().toString(), et_main_PasswordField.getText().toString());
+                String mail= et_log_mailField.getText().toString();
+                String pwd =  et_log_PasswordField.getText().toString();
+                createAccount(et_log_mailField.getText().toString(), et_log_PasswordField.getText().toString());
                 break;
             case R.id.email_sign_in_button:
-                //signIn(mEmailField.getText().toString(), mPasswordField.getText().toString());
+                signIn(et_log_mailField.getText().toString(), et_log_PasswordField.getText().toString());
                 break;
             case R.id.sign_out_button:
-                //signOut();
+                signOut();
                 break;
             case R.id.verify_email_button:
-                //sendEmailVerification();
+                sendEmailVerification();
                 break;
         }
 
