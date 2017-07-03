@@ -118,7 +118,11 @@
                 android:theme="@style/ThemeOverlay.MyDarkButton" />
 
             <Button
+<<<<<<< HEAD
                 android:id="@+id/continue_button"
+=======
+                android:id="@+id/go_control_activity"
+>>>>>>> f5cac9f693b83c766ea77faea39215eafec554c9
                 android:layout_width="0dp"
                 android:enabled="false"
                 android:layout_height="wrap_content"
