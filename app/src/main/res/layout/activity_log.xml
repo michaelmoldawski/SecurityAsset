@@ -28,6 +28,7 @@
             android:layout_height="wrap_content"
             android:text="@string/emailpassword_title_text"
             android:theme="@style/ThemeOverlay.MyTitleText" />
+
         <TextView
             android:id="@+id/status"
             style="@style/ThemeOverlay.MyTextDetail"
@@ -117,17 +118,17 @@
                 android:theme="@style/ThemeOverlay.MyDarkButton" />
 
             <Button
-                android:id="@+id/verify_email_button"
+                android:id="@+id/continue_button"
                 android:layout_width="0dp"
+                android:enabled="false"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.0"
-                android:text="@string/verify_email"
+                android:text="@string/go_to_control_activity"
                 android:theme="@style/ThemeOverlay.MyDarkButton" />
 
         </LinearLayout>
 
     </RelativeLayout>
-
 
 
 </LinearLayout>

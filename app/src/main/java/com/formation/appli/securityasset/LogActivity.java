@@ -1,5 +1,6 @@
 package com.formation.appli.securityasset;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -64,7 +65,7 @@ public class LogActivity extends AppCompatActivity implements
         findViewById(R.id.email_sign_in_button).setOnClickListener(this);
         findViewById(R.id.email_create_account_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
-        findViewById(R.id.verify_email_button).setOnClickListener(this);
+        findViewById(R.id.continue_button).setOnClickListener(this);
     }
 
     @Override
@@ -93,14 +94,15 @@ public class LogActivity extends AppCompatActivity implements
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
-                            Toast.makeText(LogActivity.this, "Authentication succeded.",
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LogActivity.this, R.string.user_creation_succeded, Toast.LENGTH_SHORT).show();
+                            sendEmailVerification();
+                            //Toast.makeText(LogActivity.this, "Go to your mail to validate your account", Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(LogActivity.this, "Authentication failed.",
+                            Toast.makeText(LogActivity.this, R.string.user_creation_failed,
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
@@ -129,21 +131,21 @@ public class LogActivity extends AppCompatActivity implements
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
-                            Toast.makeText(LogActivity.this, "Authentication succeded.",
+                            Toast.makeText(LogActivity.this, R.string.user_authentication_succeded,
                                     Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LogActivity.this, "Authentication failed.",
+                            Toast.makeText(LogActivity.this, R.string.user_authentication_failed,
                                     Toast.LENGTH_SHORT).show();
                             updateUI(null);
                         }
 
                         // [START_EXCLUDE]
                         if (!task.isSuccessful()) {
-                            tv_log_Status.setText("Authentication failed");
+                            tv_log_Status.setText(R.string.user_authentication_failed);
                         }
                         hideProgressDialog();
                         // [END_EXCLUDE]
@@ -157,10 +159,16 @@ public class LogActivity extends AppCompatActivity implements
         updateUI(null);
     }
 
+    private void goToControlActivity() {
+        Intent intent = new Intent(LogActivity.this, ControlActivity.class);
+        startActivity(intent);
+        //finish();
+    }
+
     private void sendEmailVerification() {
         // Disable button
-        findViewById(R.id.verify_email_button).setEnabled(false);
-
+        findViewById(R.id.continue_button).setEnabled(false);
+        //String messageToToast="";
         // Send verification email
         // [START send_email_verification]
         final FirebaseUser user = mAuth.getCurrentUser();
@@ -170,16 +178,17 @@ public class LogActivity extends AppCompatActivity implements
                     public void onComplete(@NonNull Task<Void> task) {
                         // [START_EXCLUDE]
                         // Re-enable button
-                        findViewById(R.id.verify_email_button).setEnabled(true);
+
 
                         if (task.isSuccessful()) {
+
                             Toast.makeText(LogActivity.this,
-                                    "Verification email sent to " + user.getEmail(),
-                                    Toast.LENGTH_SHORT).show();
+                                    getString(R.string.verification_email_sent).toString() + user.getEmail()+"\n please validate your account",
+                                    Toast.LENGTH_LONG).show();
                         } else {
                             Log.e(TAG, "sendEmailVerification", task.getException());
                             Toast.makeText(LogActivity.this,
-                                    "Failed to send verification email.",
+                                    R.string.failed_verification_email_sending,
                                     Toast.LENGTH_SHORT).show();
                         }
                         // [END_EXCLUDE]
@@ -193,7 +202,7 @@ public class LogActivity extends AppCompatActivity implements
 
         String email = et_log_mailField.getText().toString();
         if (TextUtils.isEmpty(email)) {
-            et_log_mailField.setError("Required.");
+            et_log_mailField.setError(getText(R.string.required_field));
             valid = false;
         } else {
             et_log_mailField.setError(null);
@@ -201,7 +210,7 @@ public class LogActivity extends AppCompatActivity implements
 
         String password = et_log_PasswordField.getText().toString();
         if (TextUtils.isEmpty(password)) {
-            et_log_PasswordField.setError("Required.");
+            et_log_PasswordField.setError(getText(R.string.required_field));
             valid = false;
         } else {
             et_log_PasswordField.setError(null);
@@ -229,7 +238,8 @@ public class LogActivity extends AppCompatActivity implements
             findViewById(R.id.email_password_fields).setVisibility(View.GONE);
             findViewById(R.id.signed_in_buttons).setVisibility(View.VISIBLE);
 
-            findViewById(R.id.verify_email_button).setEnabled(!currentUser.isEmailVerified());
+            findViewById(R.id.continue_button).setEnabled(currentUser.isEmailVerified());
+
         } else {
             tv_log_Status.setText(R.string.signed_out);
             tv_log_Detail.setText(null);
@@ -244,8 +254,8 @@ public class LogActivity extends AppCompatActivity implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.email_create_account_button:
-                String mail= et_log_mailField.getText().toString();
-                String pwd =  et_log_PasswordField.getText().toString();
+                String mail = et_log_mailField.getText().toString();
+                String pwd = et_log_PasswordField.getText().toString();
                 createAccount(et_log_mailField.getText().toString(), et_log_PasswordField.getText().toString());
                 break;
             case R.id.email_sign_in_button:
@@ -254,10 +264,12 @@ public class LogActivity extends AppCompatActivity implements
             case R.id.sign_out_button:
                 signOut();
                 break;
-            case R.id.verify_email_button:
-                sendEmailVerification();
+            case R.id.continue_button:
+                goToControlActivity();
                 break;
         }
 
     }
+
+
 }
