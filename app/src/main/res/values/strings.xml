@@ -14,5 +14,12 @@
     <string name="emailpassword_status_fmt">Email User: %1$s (verified: %2$b)</string>
     <string name="signed_out">Signed Out</string>
     <string name="firebase_status_fmt">SecurityAsset User: %s</string>
+    <string name="user_creation_succeded">User creation succeded.</string>
+    <string name="user_creation_failed">User creation failed.</string>
+    <string name="user_authentication_succeded.">Authentication succeded.</string>
+    <string name="user_authentication_failed">Authentication failed.</string>
+    <string name="verification_email_sent">Verification email sent to</string>
+    <string name="failed_verification_email_sending">Failed to send verification email.</string>
+    <string name="required_field">Required field</string>
 
 </resources>
