@@ -65,7 +65,7 @@ public class LogActivity extends AppCompatActivity implements
         findViewById(R.id.email_sign_in_button).setOnClickListener(this);
         findViewById(R.id.email_create_account_button).setOnClickListener(this);
         findViewById(R.id.sign_out_button).setOnClickListener(this);
-        findViewById(R.id.continue_button).setOnClickListener(this);
+        findViewById(R.id.go_control_activity).setOnClickListener(this);
     }
 
     @Override
@@ -167,7 +167,7 @@ public class LogActivity extends AppCompatActivity implements
 
     private void sendEmailVerification() {
         // Disable button
-        findViewById(R.id.continue_button).setEnabled(false);
+        findViewById(R.id.go_control_activity).setEnabled(false);
         //String messageToToast="";
         // Send verification email
         // [START send_email_verification]
@@ -238,7 +238,7 @@ public class LogActivity extends AppCompatActivity implements
             findViewById(R.id.email_password_fields).setVisibility(View.GONE);
             findViewById(R.id.signed_in_buttons).setVisibility(View.VISIBLE);
 
-            findViewById(R.id.continue_button).setEnabled(currentUser.isEmailVerified());
+            findViewById(R.id.go_control_activity).setEnabled(currentUser.isEmailVerified());
 
         } else {
             tv_log_Status.setText(R.string.signed_out);
@@ -264,7 +264,7 @@ public class LogActivity extends AppCompatActivity implements
             case R.id.sign_out_button:
                 signOut();
                 break;
-            case R.id.continue_button:
+            case R.id.go_control_activity:
                 goToControlActivity();
                 break;
         }
