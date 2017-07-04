@@ -183,7 +183,7 @@ public class LogActivity extends AppCompatActivity implements
                         if (task.isSuccessful()) {
 
                             Toast.makeText(LogActivity.this,
-                                    getString(R.string.verification_email_sent).toString() + user.getEmail()+"\n please validate your account",
+                                    getString(R.string.verification_email_sent) + user.getEmail()+"\n please validate your account",
                                     Toast.LENGTH_LONG).show();
                         } else {
                             Log.e(TAG, "sendEmailVerification", task.getException());

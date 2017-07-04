@@ -18,10 +18,14 @@
     <string name="user_creation_succeded">User creation succeded.</string>
     <string name="user_creation_failed">User creation failed.</string>
     <string name="user_authentication_succeded">Authentication succeded.</string>
-    <string name="user_authentication_succeded.">Authentication succeded.</string>
     <string name="user_authentication_failed">Authentication failed.</string>
     <string name="verification_email_sent">Verification email sent to</string>
     <string name="failed_verification_email_sending">Failed to send verification email.</string>
     <string name="required_field">Required field</string>
+    //end activity log
+
+    //activity control
+    <string name="user_position"> Your position \n Latitude: %1$d \n Longitude: %2$d</string>
+
 
 </resources>
