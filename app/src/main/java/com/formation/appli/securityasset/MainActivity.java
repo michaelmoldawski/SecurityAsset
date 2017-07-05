@@ -7,36 +7,29 @@ import android.os.Bundle;
 
 import java.util.concurrent.TimeUnit;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements AssyncWaitTask.IAssyncWaitTask{
+    private AssyncWaitTask task;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        WaitTask waitTask= new WaitTask();
-        waitTask.execute();
+        StartTask();
+        //finish();
     }
 
+    @Override
+    public void goToActivity(Intent intent) {
+        startActivity(intent);
+        finish();
+    }
 
+    private void StartTask(){
+        Intent intent = new Intent(MainActivity.this, LogActivity.class);
+        task=new AssyncWaitTask();
+        task.setCallback(this);
+        task.execute(intent);
 
-    private class WaitTask extends AsyncTask<Void, Integer, Void> {
-
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                TimeUnit.MILLISECONDS.sleep(0);
-            } catch (InterruptedException e) {
-                // Do nothing
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            Intent intent = new Intent(MainActivity.this, LogActivity.class);
-            startActivity(intent);
-            finish();
-        }
 
     }
+
 }
