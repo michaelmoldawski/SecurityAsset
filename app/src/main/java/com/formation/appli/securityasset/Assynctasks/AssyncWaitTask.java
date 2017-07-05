@@ -1,8 +1,7 @@
-package com.formation.appli.securityasset;
+package com.formation.appli.securityasset.Assynctasks;
 
 import android.content.Intent;
 import android.os.AsyncTask;
-
 import java.util.concurrent.TimeUnit;
 
 /**

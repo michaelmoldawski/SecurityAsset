@@ -2,7 +2,7 @@
     <string name="app_name">SecurityAsset</string>
     <string name="title_activity_login">Sign in</string>
 
-    //activity log
+    //region activity log
     <string name="desc_SecurityAsset_logo">Security Asset logo</string>
     <string name="emailpassword_title_text">Email and Password</string>
     <string name="hint_email">Email</string>

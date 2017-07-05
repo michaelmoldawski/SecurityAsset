@@ -1,11 +1,10 @@
 package com.formation.appli.securityasset;
 
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import java.util.concurrent.TimeUnit;
+import com.formation.appli.securityasset.Assynctasks.AssyncWaitTask;
 
 public class MainActivity extends AppCompatActivity implements AssyncWaitTask.IAssyncWaitTask{
     private AssyncWaitTask task;
@@ -14,12 +13,12 @@ public class MainActivity extends AppCompatActivity implements AssyncWaitTask.IA
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         StartTask();
-        //finish();
     }
 
     @Override
     public void goToActivity(Intent intent) {
         startActivity(intent);
+
         finish();
     }
 
@@ -28,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements AssyncWaitTask.IA
         task=new AssyncWaitTask();
         task.setCallback(this);
         task.execute(intent);
+
 
 
     }

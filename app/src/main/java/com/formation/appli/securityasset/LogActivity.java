@@ -228,7 +228,7 @@ public class LogActivity extends AppCompatActivity implements
 
 
     private void updateUI(FirebaseUser currentUser) {
-        //boolean test=currentUser.isEmailVerified();
+
         if (currentUser != null) {
             tv_log_Status.setText(getString(R.string.emailpassword_status_fmt,
                     currentUser.getEmail(), currentUser.isEmailVerified()));
