@@ -168,7 +168,6 @@ public class LogActivity extends AppCompatActivity implements
     private void sendEmailVerification() {
         // Disable button
         findViewById(R.id.go_control_activity).setEnabled(false);
-        //String messageToToast="";
         // Send verification email
         // [START send_email_verification]
         final FirebaseUser user = mAuth.getCurrentUser();
@@ -178,7 +177,6 @@ public class LogActivity extends AppCompatActivity implements
                     public void onComplete(@NonNull Task<Void> task) {
                         // [START_EXCLUDE]
                         // Re-enable button
-
 
                         if (task.isSuccessful()) {
 
@@ -225,7 +223,6 @@ public class LogActivity extends AppCompatActivity implements
     private void showProgressDialog() {
 
     }
-
 
     private void updateUI(FirebaseUser currentUser) {
 

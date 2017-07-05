@@ -11,18 +11,18 @@ import java.util.concurrent.TimeUnit;
 //Cette classe permet d'aller d'une activité à une autre en attendant
 //durant un certain temps
 
-public class AssyncWaitTask extends AsyncTask<Intent, Void, Intent> {
+public class AsyncWaitTask extends AsyncTask<Intent, Void, Intent> {
 
     //region callback
-    public interface IAssyncWaitTask {
+    public interface IAsyncWaitTask {
 
         void goToActivity(Intent intent);
 
     }
 
-    private IAssyncWaitTask callback;
+    private IAsyncWaitTask callback;
 
-    public void setCallback(IAssyncWaitTask callback) {
+    public void setCallback(IAsyncWaitTask callback) {
         this.callback = callback;
     }
 

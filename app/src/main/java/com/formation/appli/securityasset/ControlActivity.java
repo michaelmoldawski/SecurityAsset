@@ -36,7 +36,7 @@ public class ControlActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        positionsensor=new PositionSensor(this);
+        positionsensor= PositionSensor.getInstance(this);
     }
 
 }

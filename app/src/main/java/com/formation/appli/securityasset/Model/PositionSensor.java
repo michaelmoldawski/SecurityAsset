@@ -5,7 +5,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.AsyncTask;
 
+import com.formation.appli.securityasset.Assynctasks.TimerAsyncTask;
 import com.formation.appli.securityasset.ControlActivity;
 import com.formation.appli.securityasset.R;
 
@@ -18,16 +20,29 @@ import java.util.List;
 
 /*cette classe est destinée à choisir le capteur à utiliser ainsi
 qu'activer les listener et prendre control de l'interface graphique de controlActivity*/
-public class PositionSensor implements SensorEventListener {
+public class PositionSensor implements SensorEventListener, TimerAsyncTask.ITimerAsyncTask {
     private SensorManager SensorManager;
     private Sensor positionSensor;
     private int sensorId;
+    private TimerAsyncTask task;
 
-    public PositionSensor(Activity activity) {
+    private PositionSensor(Activity activity) {
         SensorManager = (SensorManager) activity.getSystemService(activity.SENSOR_SERVICE);
         positionSensorSelection();
         SensorManager.registerListener(this, positionSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
+
+    //region singleton
+    //il n'y a qu'un seul capteur de position qui est utiliser pour voir l'inclinaison du téléphone
+    private static PositionSensor instance;
+
+    public static PositionSensor getInstance(Activity activity) {
+        if (instance == null) {
+            instance = new PositionSensor(activity);
+        }
+        return instance;
+    }
+    //endregion
 
 
     @Override
@@ -42,17 +57,22 @@ public class PositionSensor implements SensorEventListener {
 
 
         if (ControlActivity.phonePosition.getY() < 3f) {
-
-            //Alerte = true;
-            ControlActivity.tvalertestatus.setText("Alerte");
+            StartTask();
             ControlActivity.tv_control_gravity_values.setBackgroundResource(R.color.Alert_on_color);
         }
         if (ControlActivity.phonePosition.getY() > 3f) {
-
-            //Alerte = false;
+            if (task.getStatus() == AsyncTask.Status.RUNNING||task.getStatus() == AsyncTask.Status.PENDING) {
+                task.cancel(true);
+            }
             ControlActivity.tvalertestatus.setText("You're fine");
             ControlActivity.tv_control_gravity_values.setBackgroundResource(R.color.Alert_off_color);
         }
+    }
+
+    private void StartTask() {
+        task = new TimerAsyncTask();
+        task.setCallback(this);
+        task.execute();
     }
 
     @Override
@@ -78,5 +98,10 @@ public class PositionSensor implements SensorEventListener {
         }
         sensorId = gravitytest.getType();
         positionSensor = SensorManager.getDefaultSensor(sensorId);
+    }
+
+    @Override
+    public void setAlarm() {
+        ControlActivity.tvalertestatus.setText("Alerte");
     }
 }

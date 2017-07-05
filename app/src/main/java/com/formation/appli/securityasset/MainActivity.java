@@ -4,10 +4,10 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.formation.appli.securityasset.Assynctasks.AssyncWaitTask;
+import com.formation.appli.securityasset.Assynctasks.AsyncWaitTask;
 
-public class MainActivity extends AppCompatActivity implements AssyncWaitTask.IAssyncWaitTask{
-    private AssyncWaitTask task;
+public class MainActivity extends AppCompatActivity implements AsyncWaitTask.IAsyncWaitTask {
+    private AsyncWaitTask task;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements AssyncWaitTask.IA
 
     private void StartTask(){
         Intent intent = new Intent(MainActivity.this, LogActivity.class);
-        task=new AssyncWaitTask();
+        task=new AsyncWaitTask();
         task.setCallback(this);
         task.execute(intent);
 
