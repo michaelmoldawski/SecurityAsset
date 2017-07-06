@@ -63,7 +63,7 @@ public class PositionSensor implements SensorEventListener {
         ControlActivity.tv_control_gravity_values.setText(x + "\n" + y + "\n" + z);
 
 
-        if (ControlActivity.phonePosition.getY() < 3f) {
+        if (Math.abs(ControlActivity.phonePosition.getY()) < 3f) {
             elapsedSeconds=System.currentTimeMillis()-tStart;
             if(elapsedSeconds>5000){
                 ControlActivity.tvalertestatus.setText("Alerte");
