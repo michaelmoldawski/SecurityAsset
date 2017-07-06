@@ -34,4 +34,13 @@
         android:layout_height="wrap_content"
         android:src="@mipmap/panic_button"/>
 
+    <Switch
+        android:id="@+id/SensorSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:text="@string/switch_button_text" />
+
 </LinearLayout>

@@ -5,14 +5,16 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.AsyncTask;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
-import com.formation.appli.securityasset.Assynctasks.TimerAsyncTask;
+
 import com.formation.appli.securityasset.ControlActivity;
 import com.formation.appli.securityasset.R;
 
 import java.util.Iterator;
 import java.util.List;
+
 
 /**
  * Created by michael on 05-07-17.
@@ -20,16 +22,24 @@ import java.util.List;
 
 /*cette classe est destinée à choisir le capteur à utiliser ainsi
 qu'activer les listener et prendre control de l'interface graphique de controlActivity*/
-public class PositionSensor implements SensorEventListener, TimerAsyncTask.ITimerAsyncTask {
-    private SensorManager SensorManager;
-    private Sensor positionSensor;
-    private int sensorId;
-    private TimerAsyncTask task;
+public class PositionSensor implements SensorEventListener,Switch.OnCheckedChangeListener {
+    private static SensorManager SensorManager;
+    private static Sensor positionSensor;
+    private static int sensorId;
+    private static long tStart;
+    private static long elapsedSeconds;
+    public static Switch sensorSwitch;
+
+
 
     private PositionSensor(Activity activity) {
         SensorManager = (SensorManager) activity.getSystemService(activity.SENSOR_SERVICE);
         positionSensorSelection();
         SensorManager.registerListener(this, positionSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        tStart = System.currentTimeMillis();
+        sensorSwitch = ControlActivity.sensorSwitch;
+        sensorSwitch.setChecked(true);
+        sensorSwitch.setOnCheckedChangeListener(this);
     }
 
     //region singleton
@@ -57,23 +67,22 @@ public class PositionSensor implements SensorEventListener, TimerAsyncTask.ITime
 
 
         if (ControlActivity.phonePosition.getY() < 3f) {
-            StartTask();
+            elapsedSeconds=System.currentTimeMillis()-tStart;
+            if(elapsedSeconds>5000){
+                ControlActivity.tvalertestatus.setText("Alerte");
+                ControlActivity.Alerte=true;
+            }
+            //StartTask();
             ControlActivity.tv_control_gravity_values.setBackgroundResource(R.color.Alert_on_color);
         }
-        if (ControlActivity.phonePosition.getY() > 3f) {
-            if (task.getStatus() == AsyncTask.Status.RUNNING||task.getStatus() == AsyncTask.Status.PENDING) {
-                task.cancel(true);
-            }
+        else {
+            tStart=System.currentTimeMillis();
             ControlActivity.tvalertestatus.setText("You're fine");
             ControlActivity.tv_control_gravity_values.setBackgroundResource(R.color.Alert_off_color);
         }
     }
 
-    private void StartTask() {
-        task = new TimerAsyncTask();
-        task.setCallback(this);
-        task.execute();
-    }
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -81,7 +90,9 @@ public class PositionSensor implements SensorEventListener, TimerAsyncTask.ITime
     }
 
     private void positionSensorSelection() {
-        // on tente de récupérer la liste des sensor de type gravité
+        /* on tente de récupérer la liste des sensor de type gravité
+        s'il n'y a pas de sensor de type gravité, le programme tenter de prendre l'accelerometre
+         */
         List<Sensor> positionSensorList = SensorManager.getSensorList(Sensor.TYPE_GRAVITY);
         Iterator<Sensor> i = positionSensorList.iterator();
         Sensor gravitytest = null;
@@ -100,8 +111,23 @@ public class PositionSensor implements SensorEventListener, TimerAsyncTask.ITime
         positionSensor = SensorManager.getDefaultSensor(sensorId);
     }
 
+
+    public android.hardware.SensorManager getSensorManager() {
+        return SensorManager;
+    }
+
+    public  Sensor getPositionSensor() {
+        return positionSensor;
+    }
+
+
     @Override
-    public void setAlarm() {
-        ControlActivity.tvalertestatus.setText("Alerte");
+    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        if (isChecked) {
+            SensorManager.registerListener(this, positionSensor, SensorManager.SENSOR_DELAY_NORMAL);
+        } else {
+            SensorManager.unregisterListener((SensorEventListener) this,positionSensor);
+        }
+
     }
 }
