@@ -22,13 +22,12 @@ import java.util.List;
 
 /*cette classe est destinée à choisir le capteur à utiliser ainsi
 qu'activer les listener et prendre control de l'interface graphique de controlActivity*/
-public class PositionSensor implements SensorEventListener,Switch.OnCheckedChangeListener {
+public class PositionSensor implements SensorEventListener {
     private static SensorManager SensorManager;
     private static Sensor positionSensor;
     private static int sensorId;
     private static long tStart;
     private static long elapsedSeconds;
-    public static Switch sensorSwitch;
 
 
 
@@ -37,9 +36,7 @@ public class PositionSensor implements SensorEventListener,Switch.OnCheckedChang
         positionSensorSelection();
         SensorManager.registerListener(this, positionSensor, SensorManager.SENSOR_DELAY_NORMAL);
         tStart = System.currentTimeMillis();
-        sensorSwitch = ControlActivity.sensorSwitch;
-        sensorSwitch.setChecked(true);
-        sensorSwitch.setOnCheckedChangeListener(this);
+
     }
 
     //region singleton
@@ -72,7 +69,6 @@ public class PositionSensor implements SensorEventListener,Switch.OnCheckedChang
                 ControlActivity.tvalertestatus.setText("Alerte");
                 ControlActivity.Alerte=true;
             }
-            //StartTask();
             ControlActivity.tv_control_gravity_values.setBackgroundResource(R.color.Alert_on_color);
         }
         else {
@@ -116,18 +112,8 @@ public class PositionSensor implements SensorEventListener,Switch.OnCheckedChang
         return SensorManager;
     }
 
-    public  Sensor getPositionSensor() {
+    public  static Sensor getPositionSensor() {
         return positionSensor;
     }
 
-
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-            SensorManager.registerListener(this, positionSensor, SensorManager.SENSOR_DELAY_NORMAL);
-        } else {
-            SensorManager.unregisterListener((SensorEventListener) this,positionSensor);
-        }
-
-    }
 }

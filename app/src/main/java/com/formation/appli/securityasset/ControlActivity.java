@@ -2,7 +2,6 @@ package com.formation.appli.securityasset;
 
 
 import android.hardware.Sensor;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
-
 import com.formation.appli.securityasset.Model.Position;
 import com.formation.appli.securityasset.Model.PositionSensor;
 
@@ -18,6 +16,7 @@ import com.formation.appli.securityasset.Model.PositionSensor;
 public class ControlActivity extends AppCompatActivity implements Switch.OnCheckedChangeListener {
     public static TextView tv_control_gravity_values;
     public static Position phonePosition;
+    public static boolean positionSensorStatus;
     public static boolean Alerte;
     public static TextView tvalertestatus;
     private static PositionSensor positionsensor;
@@ -37,8 +36,8 @@ public class ControlActivity extends AppCompatActivity implements Switch.OnCheck
         tv_control_gravity_values = (TextView) findViewById(R.id.gravityvalue);
         tvalertestatus = (TextView) findViewById(R.id.Alertestatus);
         sensorSwitch = (Switch) findViewById(R.id.SensorSwitch);
-        //sensorSwitch.setChecked(true);
-        //sensorSwitch.setOnCheckedChangeListener(this);
+        sensorSwitch.setChecked(true);
+        sensorSwitch.setOnCheckedChangeListener(this);//
     }
 
     @Override
@@ -49,12 +48,16 @@ public class ControlActivity extends AppCompatActivity implements Switch.OnCheck
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        SensorManager sensorManager=positionsensor.getSensorManager();
-        Sensor positionSensor=positionsensor.getPositionSensor();
+        SensorManager sensorManager = positionsensor.getSensorManager();
+        Sensor positionSensor = positionsensor.getPositionSensor();
         if (isChecked) {
-        //sensorManager.registerListener((SensorEventListener) this, positionSensor, SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(positionsensor, positionSensor, SensorManager.SENSOR_DELAY_NORMAL);
+            positionSensorStatus=true;
         } else {
-        sensorManager.unregisterListener((SensorEventListener) this,positionSensor);
+            sensorManager.unregisterListener(positionsensor, positionSensor);
+            Alerte=false;
+            positionSensorStatus=false;
         }
     }
+
 }
