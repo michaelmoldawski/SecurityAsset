@@ -97,7 +97,6 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.panic_button:
                 showMaps();
                 break;
-
         }
 
     }
