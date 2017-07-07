@@ -5,7 +5,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.formation.appli.securityasset.ControlActivity">
-
+<FrameLayout
+    android:id="@+id/fragment_place"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -26,21 +29,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Alertestatus"/>
+
+        <ImageButton
+            android:id="@+id/panic_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/panic_button"/>
+
+        <Switch
+            android:id="@+id/SensorSwitch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:text="@string/switch_button_text" />
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/panic_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/panic_button"/>
 
-    <Switch
-        android:id="@+id/SensorSwitch"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
-        android:text="@string/switch_button_text" />
+</FrameLayout>
 
 </LinearLayout>
