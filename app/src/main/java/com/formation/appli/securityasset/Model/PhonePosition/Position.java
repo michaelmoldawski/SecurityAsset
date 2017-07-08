@@ -1,4 +1,4 @@
-package com.formation.appli.securityasset.Model;
+package com.formation.appli.securityasset.Model.PhonePosition;
 
 /**
  * Created by michael on 05-07-17.

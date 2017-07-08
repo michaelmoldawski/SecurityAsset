@@ -1,12 +1,10 @@
-package com.formation.appli.securityasset.Model;
+package com.formation.appli.securityasset.Model.PhonePosition;
 
 import android.app.Activity;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.widget.CompoundButton;
-import android.widget.Switch;
 
 
 import com.formation.appli.securityasset.ControlActivity;

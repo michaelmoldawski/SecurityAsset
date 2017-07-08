@@ -12,11 +12,19 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
-import com.formation.appli.securityasset.Model.Position;
-import com.formation.appli.securityasset.Model.PositionSensor;
+
+import com.formation.appli.securityasset.Model.PhonePosition.Position;
+import com.formation.appli.securityasset.Model.PhonePosition.PositionSensor;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class ControlActivity extends AppCompatActivity implements View.OnClickListener,MapsFragment.MapsFragmentCallback, Switch.OnCheckedChangeListener {
+public class ControlActivity extends AppCompatActivity implements View.OnClickListener, MapsFragment.MapsFragmentCallback,
+        Switch.OnCheckedChangeListener {
     public static TextView tv_control_gravity_values;
     public static Position phonePosition;
     public static boolean positionSensorStatus;
@@ -34,13 +42,14 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control);
         initview();
+
     }
 
     private void initview() {
         phonePosition = Position.getInstance();
         tv_control_gravity_values = (TextView) findViewById(R.id.gravityvalue);
         tvalertestatus = (TextView) findViewById(R.id.Alertestatus);
-        alertButton=(ImageButton) findViewById(R.id.panic_button);
+        alertButton = (ImageButton) findViewById(R.id.panic_button);
         sensorSwitch = (Switch) findViewById(R.id.SensorSwitch);
         sensorSwitch.setChecked(true);
         sensorSwitch.setOnCheckedChangeListener(this);
@@ -55,6 +64,7 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
 
         transaction.add(R.id.fragment_place, locationFragment);
         transaction.commit();
+
     }
 
     @Override
@@ -69,11 +79,11 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
         Sensor positionSensor = positionsensor.getPositionSensor();
         if (isChecked) {
             sensorManager.registerListener(positionsensor, positionSensor, SensorManager.SENSOR_DELAY_NORMAL);
-            positionSensorStatus=true;
+            positionSensorStatus = true;
         } else {
             sensorManager.unregisterListener(positionsensor, positionSensor);
-            Alerte=false;
-            positionSensorStatus=false;
+            Alerte = false;
+            positionSensorStatus = false;
         }
     }
 
@@ -100,4 +110,5 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
         }
 
     }
+
 }

@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.formation.appli.securityasset.ControlActivity">
+
 <FrameLayout
     android:id="@+id/fragment_place"
     android:layout_width="match_parent"
@@ -44,6 +45,14 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="20dp"
             android:text="@string/switch_button_text" />
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            tools:context="com.example.mapwithmarker.MapsMarkerActivity" />
+
     </LinearLayout>
 
 

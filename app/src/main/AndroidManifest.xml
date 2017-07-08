@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!-- gestion des maps-->
+        <!-- gestion de l'API googlemaps-->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDhO4uV5oAABWOoMVgc3Hc3plHJE8q0Tzc"/>
