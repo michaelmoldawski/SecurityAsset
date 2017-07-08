@@ -12,15 +12,9 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
-
 import com.formation.appli.securityasset.Model.PhonePosition.Position;
 import com.formation.appli.securityasset.Model.PhonePosition.PositionSensor;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+
 
 
 public class ControlActivity extends AppCompatActivity implements View.OnClickListener, MapsFragment.MapsFragmentCallback,
@@ -110,5 +104,6 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
         }
 
     }
+
 
 }

@@ -1,7 +1,9 @@
 package com.formation.appli.securityasset;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -29,12 +31,14 @@ public class LogActivity extends AppCompatActivity implements
     private TextView tv_log_Detail;
     private EditText et_log_mailField;
     private EditText et_log_PasswordField;
+    private static final int MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION =1 ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log);
         initView();
+        requestPermission();
 
         // [START initialize_auth]
         mAuth = FirebaseAuth.getInstance();
@@ -267,6 +271,14 @@ public class LogActivity extends AppCompatActivity implements
         }
 
     }
-
+    private void requestPermission() {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //la condition ci-dessous fait que le choix de ne pas accepter une permission est refuser et le programme ne le redemandera pas
+            //effacer la condition ci-dessous pour forcer le programme à demander l'autorisation si elle n'est pas active
+            //if (!ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION);
+            //}
+        }
+    }
 
 }
