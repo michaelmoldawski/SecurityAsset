@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.location.LocationManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -16,11 +17,13 @@ import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.formation.appli.securityasset.Model.PhoneLocation.GpsLocation;
 import com.formation.appli.securityasset.Model.PhonePosition.Position;
 import com.formation.appli.securityasset.Model.PhonePosition.PositionSensor;
+import com.google.android.gms.maps.model.LatLng;
 
 
-public class ControlActivity extends AppCompatActivity implements DialogInterface.OnClickListener, View.OnClickListener, MapsFragment.MapsFragmentCallback,
+public class ControlActivity extends AppCompatActivity implements GpsLocation.IGpsLocation,DialogInterface.OnClickListener, View.OnClickListener, MapsFragment.MapsFragmentCallback,
         Switch.OnCheckedChangeListener {
     public static TextView tv_control_gravity_values;
     public static Position phonePosition;
@@ -31,6 +34,8 @@ public class ControlActivity extends AppCompatActivity implements DialogInterfac
     public static Switch sensorSwitch;
     public static ImageButton alertButton;
     public static MapsFragment locationFragment;
+    public static LocationManager locationManager;
+    public static LatLng phoneLocation;
 
 
     @Override
@@ -38,12 +43,13 @@ public class ControlActivity extends AppCompatActivity implements DialogInterfac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control);
         initview();
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Would you activate the gps for properer use of the application?").setPositiveButton("Yes", this)
-                .setNegativeButton("No", this).show();
+        askGpsActivation();
 
     }
+
+    private void setPhoneLocation() {
+    }
+
 
     private void initview() {
         phonePosition = Position.getInstance();
@@ -54,17 +60,19 @@ public class ControlActivity extends AppCompatActivity implements DialogInterfac
         sensorSwitch.setChecked(true);
         sensorSwitch.setOnCheckedChangeListener(this);
         alertButton.setOnClickListener(this);
+        locationFragment = MapsFragment.getInstance();
+        locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            setPhoneLocation();
+        }
     }
 
     private void showMaps() {
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        locationFragment = MapsFragment.getInstance();
         locationFragment.setCallback(this);
-
         transaction.add(R.id.fragment_place, locationFragment);
         transaction.commit();
-
     }
 
     @Override
@@ -94,6 +102,7 @@ public class ControlActivity extends AppCompatActivity implements DialogInterfac
 
     @Override
     public void onBackPressed() {
+
         if (locationFragment.isAdded()) {
             this.getSupportFragmentManager().beginTransaction().remove(locationFragment).commit();
         } else {
@@ -108,9 +117,7 @@ public class ControlActivity extends AppCompatActivity implements DialogInterfac
                 showMaps();
                 break;
         }
-
     }
-
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
@@ -124,5 +131,18 @@ public class ControlActivity extends AppCompatActivity implements DialogInterfac
                 break;
 
         }
+    }
+
+    private void askGpsActivation() {
+        if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("Would you activate the gps for properer use of the application?").setPositiveButton("Yes", this)
+                    .setNegativeButton("No", this).show();
+        }
+    }
+
+    @Override
+    public void setMyLocation() {
+
     }
 }

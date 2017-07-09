@@ -34,7 +34,6 @@ public class PositionSensor implements SensorEventListener {
         positionSensorSelection();
         SensorManager.registerListener(this, positionSensor, SensorManager.SENSOR_DELAY_NORMAL);
         tStart = System.currentTimeMillis();
-
     }
 
     //region singleton

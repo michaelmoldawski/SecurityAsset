@@ -1,6 +1,4 @@
-package com.formation.appli.securityasset.Model;
-
-import com.formation.appli.securityasset.MapsFragment;
+package com.formation.appli.securityasset.Model.PhoneLocation;
 
 /**
  * Created by michael on 08-07-17.

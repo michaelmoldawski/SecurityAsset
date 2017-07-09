@@ -31,7 +31,7 @@ public class LogActivity extends AppCompatActivity implements
     private TextView tv_log_Detail;
     private EditText et_log_mailField;
     private EditText et_log_PasswordField;
-    private static final int MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION =1 ;
+    private static final int MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,7 +185,7 @@ public class LogActivity extends AppCompatActivity implements
                         if (task.isSuccessful()) {
 
                             Toast.makeText(LogActivity.this,
-                                    getString(R.string.verification_email_sent) + user.getEmail()+"\n please validate your account",
+                                    getString(R.string.verification_email_sent) + user.getEmail() + "\n please validate your account",
                                     Toast.LENGTH_LONG).show();
                         } else {
                             Log.e(TAG, "sendEmailVerification", task.getException());
@@ -238,7 +238,6 @@ public class LogActivity extends AppCompatActivity implements
             findViewById(R.id.email_password_buttons).setVisibility(View.GONE);
             findViewById(R.id.email_password_fields).setVisibility(View.GONE);
             findViewById(R.id.signed_in_buttons).setVisibility(View.VISIBLE);
-
             findViewById(R.id.go_control_activity).setEnabled(currentUser.isEmailVerified());
 
         } else {
@@ -271,13 +270,10 @@ public class LogActivity extends AppCompatActivity implements
         }
 
     }
+
     private void requestPermission() {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            //la condition ci-dessous fait que le choix de ne pas accepter une permission est refuser et le programme ne le redemandera pas
-            //effacer la condition ci-dessous pour forcer le programme à demander l'autorisation si elle n'est pas active
-            //if (!ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.ACCESS_FINE_LOCATION)) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION);
-            //}
         }
     }
 

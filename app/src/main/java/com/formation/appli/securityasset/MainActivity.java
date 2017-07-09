@@ -17,7 +17,6 @@ public class MainActivity extends AppCompatActivity implements AsyncWaitTask.IAs
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         StartTask();
-
     }
 
 
