@@ -1,6 +1,9 @@
 package com.formation.appli.securityasset;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.support.v4.app.FragmentManager;
@@ -12,12 +15,12 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
+
 import com.formation.appli.securityasset.Model.PhonePosition.Position;
 import com.formation.appli.securityasset.Model.PhonePosition.PositionSensor;
 
 
-
-public class ControlActivity extends AppCompatActivity implements View.OnClickListener, MapsFragment.MapsFragmentCallback,
+public class ControlActivity extends AppCompatActivity implements DialogInterface.OnClickListener, View.OnClickListener, MapsFragment.MapsFragmentCallback,
         Switch.OnCheckedChangeListener {
     public static TextView tv_control_gravity_values;
     public static Position phonePosition;
@@ -30,12 +33,15 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
     public static MapsFragment locationFragment;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control);
         initview();
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage("Would you activate the gps for properer use of the application?").setPositiveButton("Yes", this)
+                .setNegativeButton("No", this).show();
 
     }
 
@@ -106,4 +112,17 @@ public class ControlActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
+    @Override
+    public void onClick(DialogInterface dialog, int which) {
+        switch (which) {
+            case DialogInterface.BUTTON_POSITIVE:
+                startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                break;
+
+            case DialogInterface.BUTTON_NEGATIVE:
+                //No button clicked
+                break;
+
+        }
+    }
 }
