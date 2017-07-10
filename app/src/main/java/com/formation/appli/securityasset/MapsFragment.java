@@ -1,5 +1,6 @@
 package com.formation.appli.securityasset;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,7 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import com.formation.appli.securityasset.Model.PhoneLocation.Location;
+import com.formation.appli.securityasset.Model.PhoneLocation.Phonelocation;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -20,7 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     SupportMapFragment mapFragment;
-    Location myLocation;
+    Phonelocation myPhonelocation;
     FragmentManager fragManager;
 
     @Override
@@ -49,8 +50,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        Location location=googleMap.getMyLocation();//TODO utiliser le FusedLocationProvide
+        double latitude=location.getLatitude();
+        double longitude=location.getLongitude();
+        LatLng me=new LatLng(latitude,longitude);
         LatLng sydney = new LatLng(-33.852, 151.211);
-        Marker help=googleMap.addMarker(new MarkerOptions().position(sydney)
+        Marker help=googleMap.addMarker(new MarkerOptions().position(me)
                 .title("Marker in Sydney"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         help.showInfoWindow();

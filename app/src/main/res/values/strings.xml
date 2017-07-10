@@ -25,9 +25,10 @@
     //end activity log
 
     //activity control
-    <string name="user_position"> Your position \n Latitude: %1$d \n Longitude: %2$d</string>
+    <string name="user_location"> Your position \n Latitude: %1$s \n Longitude: %2$s</string>
     <string name="control_activity_switchOff_text">Sensor Off</string>
     <string name="switch_button_text">Sensor</string>
+    <string name="user_position">Youre location</string>
 
 
 </resources>

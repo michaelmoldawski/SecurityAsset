@@ -18,14 +18,16 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.formation.appli.securityasset.Model.PhoneLocation.GpsLocation;
+import com.formation.appli.securityasset.Model.PhoneLocation.Phonelocation;
 import com.formation.appli.securityasset.Model.PhonePosition.Position;
 import com.formation.appli.securityasset.Model.PhonePosition.PositionSensor;
 import com.google.android.gms.maps.model.LatLng;
 
 
-public class ControlActivity extends AppCompatActivity implements GpsLocation.IGpsLocation,DialogInterface.OnClickListener, View.OnClickListener, MapsFragment.MapsFragmentCallback,
+public class ControlActivity extends AppCompatActivity implements GpsLocation.IGpsLocation, DialogInterface.OnClickListener, View.OnClickListener, MapsFragment.MapsFragmentCallback,
         Switch.OnCheckedChangeListener {
     public static TextView tv_control_gravity_values;
+    public static TextView tvactuallocation;
     public static Position phonePosition;
     public static boolean positionSensorStatus;
     public static boolean Alerte;
@@ -36,6 +38,7 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
     public static MapsFragment locationFragment;
     public static LocationManager locationManager;
     public static LatLng phoneLocation;
+    private double latitude, longitude;
 
 
     @Override
@@ -44,27 +47,28 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
         setContentView(R.layout.activity_control);
         initview();
         askGpsActivation();
+        locate();
+
 
     }
 
-    private void setPhoneLocation() {
-    }
+
 
 
     private void initview() {
         phonePosition = Position.getInstance();
         tv_control_gravity_values = (TextView) findViewById(R.id.gravityvalue);
         tvalertestatus = (TextView) findViewById(R.id.Alertestatus);
+        tvactuallocation =(TextView) findViewById(R.id.current_location);
         alertButton = (ImageButton) findViewById(R.id.panic_button);
         sensorSwitch = (Switch) findViewById(R.id.SensorSwitch);
         sensorSwitch.setChecked(true);
         sensorSwitch.setOnCheckedChangeListener(this);
         alertButton.setOnClickListener(this);
         locationFragment = MapsFragment.getInstance();
-        locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
-        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            setPhoneLocation();
-        }
+        //locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
+        //if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        //}
     }
 
     private void showMaps() {
@@ -121,6 +125,7 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
 
     @Override
     public void onClick(DialogInterface dialog, int which) {
+
         switch (which) {
             case DialogInterface.BUTTON_POSITIVE:
                 startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
@@ -129,20 +134,28 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
             case DialogInterface.BUTTON_NEGATIVE:
                 //No button clicked
                 break;
-
         }
+
     }
 
     private void askGpsActivation() {
         if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Would you activate the gps for properer use of the application?").setPositiveButton("Yes", this)
+            builder.setMessage("Would you like activate the gps for properer use of the application?").setPositiveButton("Yes", this)
                     .setNegativeButton("No", this).show();
         }
     }
 
-    @Override
-    public void setMyLocation() {
+    public void locate() {
+        GpsLocation gps = GpsLocation.getInstance();
+        gps.setCallback(this);
+        gps.askLocation(this);
+    }
 
+    @Override
+    public void getLocation(Phonelocation phonelocation) {
+        longitude=phonelocation.getLatitude();
+        latitude=phonelocation.getLongitude();
+        tvactuallocation.setText(getString(R.string.user_location,latitude,longitude));
     }
 }

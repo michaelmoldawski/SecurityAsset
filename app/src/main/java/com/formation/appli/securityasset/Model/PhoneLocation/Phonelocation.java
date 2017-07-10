@@ -4,26 +4,26 @@ package com.formation.appli.securityasset.Model.PhoneLocation;
  * Created by michael on 08-07-17.
  */
 
-public class Location {
+public class Phonelocation {
 
     private double latitude;
     private double longitude;
 
-    public Location() {
+    public Phonelocation() {
 
     }
 
-    public Location(double latitude, double longitude) {
+    public Phonelocation(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
 
     //region Singleton
-    private static Location instance;
+    private static Phonelocation instance;
 
-    public static Location getInstance() {
+    public static Phonelocation getInstance() {
         if (instance == null) {
-            instance = new Location();
+            instance = new Phonelocation();
         }
         return instance;
     }

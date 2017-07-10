@@ -253,17 +253,25 @@ public class LogActivity extends AppCompatActivity implements
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+
             case R.id.email_create_account_button:
                 String mail = et_log_mailField.getText().toString();
                 String pwd = et_log_PasswordField.getText().toString();
-                createAccount(et_log_mailField.getText().toString(), et_log_PasswordField.getText().toString());
+
+                createAccount(mail, pwd);
                 break;
+
             case R.id.email_sign_in_button:
-                signIn(et_log_mailField.getText().toString(), et_log_PasswordField.getText().toString());
+                mail = et_log_mailField.getText().toString();
+                pwd = et_log_PasswordField.getText().toString();
+
+                signIn(mail,pwd);
                 break;
+
             case R.id.sign_out_button:
                 signOut();
                 break;
+
             case R.id.go_control_activity:
                 goToControlActivity();
                 break;

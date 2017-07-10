@@ -15,19 +15,19 @@
         android:theme="@style/AppTheme">
 
         <!-- gestion de l'API googlemaps-->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDhO4uV5oAABWOoMVgc3Hc3plHJE8q0Tzc"/>
+        <!-- <meta-data
+             android:name="com.google.android.geo.API_KEY"
+             android:value="AIzaSyDhO4uV5oAABWOoMVgc3Hc3plHJE8q0Tzc"/>-->
 
-        <activity android:name=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+         <activity android:name=".MainActivity">
+             <intent-filter>
+                 <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".LogActivity"></activity>
-        <activity android:name=".ControlActivity"></activity>
-    </application>
+                 <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
+         </activity>
+         <activity android:name=".LogActivity"></activity>
+         <activity android:name=".ControlActivity"></activity>
+     </application>
 
-</manifest>
+ </manifest>
