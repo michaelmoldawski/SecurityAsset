@@ -50,12 +50,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Location location=googleMap.getMyLocation();//TODO utiliser le FusedLocationProvide
-        double latitude=location.getLatitude();
-        double longitude=location.getLongitude();
-        LatLng me=new LatLng(latitude,longitude);
+        //Location location=googleMap.getMyLocation();//TODO utiliser le FusedLocationProvide
+        //double latitude=location.getLatitude();
+        //double longitude=location.getLongitude();
+        //LatLng me=new LatLng(latitude,longitude);
         LatLng sydney = new LatLng(-33.852, 151.211);
-        Marker help=googleMap.addMarker(new MarkerOptions().position(me)
+        Marker help=googleMap.addMarker(new MarkerOptions().position(sydney)
                 .title("Marker in Sydney"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         help.showInfoWindow();
