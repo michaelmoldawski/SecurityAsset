@@ -66,7 +66,7 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
         sensorSwitch.setOnCheckedChangeListener(this);
         alertButton.setOnClickListener(this);
         locationFragment = MapsFragment.getInstance();
-        //locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
         //if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
         //}
     }

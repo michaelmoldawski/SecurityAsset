@@ -15,9 +15,9 @@
         android:theme="@style/AppTheme">
 
         <!-- gestion de l'API googlemaps-->
-        <!-- <meta-data
+        <meta-data
              android:name="com.google.android.geo.API_KEY"
-             android:value="AIzaSyDhO4uV5oAABWOoMVgc3Hc3plHJE8q0Tzc"/>-->
+             android:value="AIzaSyDhO4uV5oAABWOoMVgc3Hc3plHJE8q0Tzc"/>
 
          <activity android:name=".MainActivity">
              <intent-filter>
