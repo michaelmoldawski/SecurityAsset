@@ -37,6 +37,7 @@ dependencies {
     compile "com.google.firebase:firebase-messaging:$VERSION_SERVICE"
     compile "com.google.android.gms:play-services-gcm:$VERSION_SERVICE"
     compile "com.google.android.gms:play-services-maps:$VERSION_SERVICE"
+    compile "com.google.android.gms:play-services:$VERSION_SERVICE"//test
     apply plugin: 'com.google.gms.google-services'
     testCompile 'junit:junit:4.12'
 }

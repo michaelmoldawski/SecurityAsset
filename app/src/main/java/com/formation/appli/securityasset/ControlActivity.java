@@ -2,6 +2,7 @@ package com.formation.appli.securityasset;
 
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.hardware.Sensor;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -24,8 +26,8 @@ import com.formation.appli.securityasset.Model.PhonePosition.PositionSensor;
 import com.google.android.gms.maps.model.LatLng;
 
 
-public class ControlActivity extends AppCompatActivity implements GpsLocation.IGpsLocation, DialogInterface.OnClickListener, View.OnClickListener, MapsFragment.MapsFragmentCallback,
-        Switch.OnCheckedChangeListener {
+public class ControlActivity extends AppCompatActivity implements  GpsLocation.IGpsLocation, DialogInterface.OnClickListener,
+        View.OnClickListener, MapsFragment.MapsFragmentCallback, Switch.OnCheckedChangeListener {
     public static TextView tv_control_gravity_values;
     public static TextView tvactuallocation;
     public static Position phonePosition;
@@ -36,18 +38,18 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
     public static ImageButton alertButton;
     public static MapsFragment locationFragment;
     public static LocationManager locationManager;
-    public static LatLng phoneLocation;
     private double latitude, longitude;
+    public static Context context;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_control);
+        context = this;
         initview();
         askGpsActivation();
         locate();
-
 
     }
 
@@ -55,7 +57,7 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
         phonePosition = Position.getInstance();
         tv_control_gravity_values = (TextView) findViewById(R.id.gravityvalue);
         tvalertestatus = (TextView) findViewById(R.id.Alertestatus);
-        tvactuallocation =(TextView) findViewById(R.id.current_location);
+        tvactuallocation = (TextView) findViewById(R.id.current_location);
         alertButton = (ImageButton) findViewById(R.id.panic_button);
         sensorSwitch = (Switch) findViewById(R.id.SensorSwitch);
         sensorSwitch.setChecked(true);
@@ -65,6 +67,10 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
         locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
         //if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
         //}
+        /*TODO enlever l'apiKey du manifeste, afin qu'elle ne dois pas détourner
+        TODO et la prendre du JSON pour activer les activiter google*/
+        //String Api_Key= getString(R.string.google_api_key);
+
     }
 
     private void showMaps() {
@@ -141,6 +147,7 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
     }
 
     public void locate() {
+
         GpsLocation gps = GpsLocation.getInstance();
         gps.setCallback(this);
         gps.askLocation(this);
@@ -148,8 +155,11 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
 
     @Override
     public void getLocation(Phonelocation phonelocation) {
-        longitude=phonelocation.getLatitude();
-        latitude=phonelocation.getLongitude();
-        tvactuallocation.setText(getString(R.string.user_location,latitude,longitude));
+        Log.v("GPS_POS_CHECK", phonelocation.getLongitude() + " - " + phonelocation.getLatitude());
+        latitude = phonelocation.getLatitude();
+        longitude = phonelocation.getLongitude();
+        tvactuallocation.setText(getString(R.string.user_location, latitude, longitude));
     }
+
+
 }

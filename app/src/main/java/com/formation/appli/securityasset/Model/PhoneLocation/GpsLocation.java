@@ -7,6 +7,7 @@ import android.location.*;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 
 
 /**
@@ -14,6 +15,7 @@ import android.support.v4.app.ActivityCompat;
  */
 
 public class GpsLocation implements LocationListener {
+
     private static Phonelocation phone=null;
 
     private GpsLocation(Phonelocation phone) {
@@ -56,7 +58,36 @@ public class GpsLocation implements LocationListener {
 
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 50, this);
+
+        Log.v("GPS_POS_CHECK","Start Update");
+
+        if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))   {
+            Log.i("GPS_POS_CHECK", "GPS activer");
+        }
+
+        if(locationManager.isProviderEnabled(LocationManager.PASSIVE_PROVIDER))   {
+            Log.i("GPS_POS_CHECK", "Passive Activer");
+        }
+
+        if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))   {
+            Log.i("GPS_POS_CHECK", "Network Activer");
+        }
+
+        //locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
+     //   Criteria criteria = new Criteria();
+     //   criteria.setAccuracy(Criteria.ACCURACY_FINE);
+     //   criteria.setCostAllowed(false);
+     //   Location loc = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria,true));
+     //
+     //   if(loc != null)  {
+     //   Log.i("GPS_POS_CHECK",loc.toString());
+     //   }
+     //   else {
+     //       Log.i("GPS_POS_CHECK","Is null");
+     //   }
     }
 
     @Override
@@ -64,10 +95,14 @@ public class GpsLocation implements LocationListener {
         if (callback != null) {
             callback.getLocation(new Phonelocation(location.getLatitude(),location.getLongitude())
             );
+
+            Log.v("GPS_POS_CHECK","Trouvé!");
+            //locationManager.removedUpdates(this);
         }
     }
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
+        Log.i("GPS_POS_CHECK",provider);
 
     }
 

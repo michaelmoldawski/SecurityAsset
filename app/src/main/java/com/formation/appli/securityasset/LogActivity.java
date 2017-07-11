@@ -200,8 +200,8 @@ public class LogActivity extends AppCompatActivity implements
     }
 
     private boolean validateForm() {
-        boolean valid = true;
 
+        boolean valid = true;
         String email = et_log_mailField.getText().toString();
         if (TextUtils.isEmpty(email)) {
             et_log_mailField.setError(getText(R.string.required_field));
