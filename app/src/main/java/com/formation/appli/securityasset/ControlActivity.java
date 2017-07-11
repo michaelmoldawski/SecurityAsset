@@ -29,7 +29,6 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
     public static TextView tv_control_gravity_values;
     public static TextView tvactuallocation;
     public static Position phonePosition;
-    public static boolean positionSensorStatus;
     public static boolean Alerte;
     public static TextView tvalertestatus;
     private static PositionSensor positionsensor;
@@ -51,9 +50,6 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
 
 
     }
-
-
-
 
     private void initview() {
         phonePosition = Position.getInstance();
@@ -91,11 +87,9 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
         Sensor positionSensor = positionsensor.getPositionSensor();
         if (isChecked) {
             sensorManager.registerListener(positionsensor, positionSensor, SensorManager.SENSOR_DELAY_NORMAL);
-            positionSensorStatus = true;
         } else {
             sensorManager.unregisterListener(positionsensor, positionSensor);
             Alerte = false;
-            positionSensorStatus = false;
         }
     }
 
