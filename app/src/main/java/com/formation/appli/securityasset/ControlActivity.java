@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.formation.appli.securityasset.Assynctasks.AsyncGeoCoding;
 import com.formation.appli.securityasset.Model.PhoneLocation.GpsLocation;
 import com.formation.appli.securityasset.Model.PhoneLocation.Phonelocation;
 import com.formation.appli.securityasset.Model.PhonePosition.Position;
@@ -26,8 +27,9 @@ import com.formation.appli.securityasset.Model.PhonePosition.PositionSensor;
 import com.google.android.gms.maps.model.LatLng;
 
 
-public class ControlActivity extends AppCompatActivity implements  GpsLocation.IGpsLocation, DialogInterface.OnClickListener,
-        View.OnClickListener, MapsFragment.MapsFragmentCallback, Switch.OnCheckedChangeListener {
+public class ControlActivity extends AppCompatActivity implements GpsLocation.IGpsLocation, DialogInterface.OnClickListener,
+        View.OnClickListener, MapsFragment.MapsFragmentCallback, Switch.OnCheckedChangeListener,
+        AsyncGeoCoding.IAsyncGeoCoding {
     public static TextView tv_control_gravity_values;
     public static TextView tvactuallocation;
     public static Position phonePosition;
@@ -40,6 +42,9 @@ public class ControlActivity extends AppCompatActivity implements  GpsLocation.I
     public static LocationManager locationManager;
     private double latitude, longitude;
     public static Context context;
+    public static LatLng mylocation;
+    public static TextView tv_contol_activity_geocoding;
+
 
 
     @Override
@@ -50,6 +55,7 @@ public class ControlActivity extends AppCompatActivity implements  GpsLocation.I
         initview();
         askGpsActivation();
         locate();
+        //sendApiRequest();
 
     }
 
@@ -70,7 +76,7 @@ public class ControlActivity extends AppCompatActivity implements  GpsLocation.I
         /*TODO enlever l'apiKey du manifeste, afin qu'elle ne dois pas détourner
         TODO et la prendre du JSON pour activer les activiter google*/
         //String Api_Key= getString(R.string.google_api_key);
-
+        tv_contol_activity_geocoding = (TextView) findViewById(R.id.geocoding);
     }
 
     private void showMaps() {
@@ -101,7 +107,7 @@ public class ControlActivity extends AppCompatActivity implements  GpsLocation.I
 
     @Override
     public void mapsPosition(String name) {
-
+//ne sert encore à rien, à implémenter le callback vers le fragment mapsFragment
     }
 
     @Override
@@ -159,7 +165,22 @@ public class ControlActivity extends AppCompatActivity implements  GpsLocation.I
         latitude = phonelocation.getLatitude();
         longitude = phonelocation.getLongitude();
         tvactuallocation.setText(getString(R.string.user_location, latitude, longitude));
+        mylocation = new LatLng(latitude, longitude);
+        sendApiRequest();
     }
 
+    private void sendApiRequest() {
+        AsyncGeoCoding task = new AsyncGeoCoding();
+        task.setCallback(this);
+        double test1=latitude;
+        String tasktoExecutes=String.valueOf(latitude)+","+String.valueOf(longitude);
+        //task.execute(String.valueOf(50.85195599999999),String.valueOf(4.306162800000038));
+        task.execute(tasktoExecutes);
+    }
 
+    @Override
+    public void updateGeoCode(String s) {
+        String test=s;
+        tv_contol_activity_geocoding.setText(s);
+    }
 }
