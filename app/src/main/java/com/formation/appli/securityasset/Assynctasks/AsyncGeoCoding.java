@@ -1,21 +1,12 @@
 package com.formation.appli.securityasset.Assynctasks;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.formation.appli.securityasset.Model.Helper.Web.HttpHandler;
-import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * Created by michael on 11-07-17.
@@ -48,7 +39,7 @@ public class AsyncGeoCoding extends AsyncTask<String, Void, String> {
         HttpHandler sh = new HttpHandler();
 
         // Making a request to url and getting response
-        String jsonStr = sh.makeServiceCall(request);//TODO debug du jsonStr
+        String jsonStr = sh.makeServiceCall(request);
 
         if (jsonStr != null) {
             try {
@@ -66,10 +57,6 @@ public class AsyncGeoCoding extends AsyncTask<String, Void, String> {
 
             } catch (JSONException e) {
                 e.printStackTrace();
-            } finally {
-                if (HttpHandler.conn != null) {
-                    HttpHandler.conn.disconnect();
-                }
             }
 
             return null;

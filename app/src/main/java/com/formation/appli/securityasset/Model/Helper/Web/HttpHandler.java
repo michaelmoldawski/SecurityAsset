@@ -39,11 +39,7 @@ public class HttpHandler {
                 InputStream in = new BufferedInputStream(conn.getInputStream());
                 response = convertStreamToString(in);
             }
-            //endregion
-            //conn.setRequestMethod("GET");
-            // read the response
-            //InputStream in = new BufferedInputStream(conn.getInputStream());
-            //response = convertStreamToString(in);
+
         } catch (MalformedURLException e) {
             Log.e(TAG, "MalformedURLException: " + e.getMessage());
         } catch (ProtocolException e) {
@@ -52,6 +48,11 @@ public class HttpHandler {
             Log.e(TAG, "IOException: " + e.getMessage());
         } catch (Exception e) {
             Log.e(TAG, "Exception: " + e.getMessage());
+        }
+        finally{
+            if (conn != null) {
+                conn.disconnect();
+            }
         }
         return response;
     }

@@ -27,9 +27,11 @@ import com.formation.appli.securityasset.Model.PhonePosition.PositionSensor;
 import com.google.android.gms.maps.model.LatLng;
 
 
-public class ControlActivity extends AppCompatActivity implements GpsLocation.IGpsLocation, DialogInterface.OnClickListener,
-        View.OnClickListener, MapsFragment.MapsFragmentCallback, Switch.OnCheckedChangeListener,
+public class ControlActivity extends AppCompatActivity implements GpsLocation.IGpsLocation,
+        DialogInterface.OnClickListener, View.OnClickListener,
+        MapsFragment.MapsFragmentCallback, Switch.OnCheckedChangeListener,
         AsyncGeoCoding.IAsyncGeoCoding {
+
     public static TextView tv_control_gravity_values;
     public static TextView tvactuallocation;
     public static Position phonePosition;
@@ -46,7 +48,6 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
     public static TextView tv_contol_activity_geocoding;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +56,6 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
         initview();
         askGpsActivation();
         locate();
-        //sendApiRequest();
 
     }
 
@@ -172,15 +172,14 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
     private void sendApiRequest() {
         AsyncGeoCoding task = new AsyncGeoCoding();
         task.setCallback(this);
-        double test1=latitude;
-        String tasktoExecutes=String.valueOf(latitude)+","+String.valueOf(longitude);
+        double test1 = latitude;
+        String tasktoExecutes = String.valueOf(latitude) + "," + String.valueOf(longitude);
         //task.execute(String.valueOf(50.85195599999999),String.valueOf(4.306162800000038));
         task.execute(tasktoExecutes);
     }
 
     @Override
     public void updateGeoCode(String s) {
-        String test=s;
         tv_contol_activity_geocoding.setText(s);
     }
 }
