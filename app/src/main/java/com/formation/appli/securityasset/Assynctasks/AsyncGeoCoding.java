@@ -13,6 +13,8 @@ import org.json.JSONObject;
  */
 
 public class AsyncGeoCoding extends AsyncTask<String, Void, String> {
+    //la clé API utilisée n'est pas la même que les googles services, ceux ci n'englobant pas la l'authorisation de l'api
+    //à Améliorer! PS: attentation à la limitiation de la clé
     private static final String URL_APPID = "AIzaSyAOQVFMhVVDVsm9rWyt4RJiwfA6ojXEzgs";
     private static final String URL_BASE = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
 

@@ -138,7 +138,7 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
                 break;
 
             case DialogInterface.BUTTON_NEGATIVE:
-                //No button clicked
+                //aucune action ne dois être effectuée en cas de refus
                 break;
         }
 
@@ -172,14 +172,14 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
     private void sendApiRequest() {
         AsyncGeoCoding task = new AsyncGeoCoding();
         task.setCallback(this);
-        double test1 = latitude;
+        double test = latitude;
         String tasktoExecutes = String.valueOf(latitude) + "," + String.valueOf(longitude);
-        //task.execute(String.valueOf(50.85195599999999),String.valueOf(4.306162800000038));
         task.execute(tasktoExecutes);
     }
 
     @Override
     public void updateGeoCode(String s) {
+        String test=s;
         tv_contol_activity_geocoding.setText(s);
     }
 }
