@@ -32,6 +32,8 @@ public class LogActivity extends AppCompatActivity implements
     private EditText et_log_mailField;
     private EditText et_log_PasswordField;
     private static final int MY_PERMISSION_REQUEST_ACCESS_FINE_LOCATION = 1;
+    public static String userMail;
+    public static FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,7 +79,7 @@ public class LogActivity extends AppCompatActivity implements
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
 
@@ -234,6 +236,7 @@ public class LogActivity extends AppCompatActivity implements
             tv_log_Status.setText(getString(R.string.emailpassword_status_fmt,
                     currentUser.getEmail(), currentUser.isEmailVerified()));
             tv_log_Detail.setText(getString(R.string.firebase_status_fmt, currentUser.getUid()));
+            userMail=currentUser.getEmail();
 
             findViewById(R.id.email_password_buttons).setVisibility(View.GONE);
             findViewById(R.id.email_password_fields).setVisibility(View.GONE);

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,10 @@ import com.formation.appli.securityasset.Model.PhoneLocation.Phonelocation;
 import com.formation.appli.securityasset.Model.PhonePosition.Position;
 import com.formation.appli.securityasset.Model.PhonePosition.PositionSensor;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 
 public class ControlActivity extends AppCompatActivity implements GpsLocation.IGpsLocation,
@@ -56,7 +61,6 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
         initview();
         askGpsActivation();
         locate();
-
     }
 
     private void initview() {
@@ -71,8 +75,7 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
         alertButton.setOnClickListener(this);
         locationFragment = MapsFragment.getInstance();
         locationManager = (LocationManager) getSystemService(this.LOCATION_SERVICE);
-        //if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-        //}
+
         /*TODO enlever l'apiKey du manifeste, afin qu'elle ne dois pas détourner
         TODO et la prendre du JSON pour activer les activiter google*/
         //String Api_Key= getString(R.string.google_api_key);
@@ -166,7 +169,29 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
         longitude = phonelocation.getLongitude();
         tvactuallocation.setText(getString(R.string.user_location, latitude, longitude));
         mylocation = new LatLng(latitude, longitude);
+
         sendApiRequest();
+        saveInFirebase();
+
+    }
+
+    private void saveInFirebase() {
+        // Write a message to the database
+        FirebaseUser currentUser = LogActivity.currentUser;
+        String mail = currentUser.getEmail();
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference mDatabase /*= database.getReference("ID")*/;
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("users/"
+                + currentUser.getUid()).child("email");
+
+        mDatabase.setValue(mail);
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("users/"
+                + currentUser.getUid()).child("latitude");
+        mDatabase.setValue(latitude);
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("users/"
+                + currentUser.getUid()).child("longitude");
+        mDatabase.setValue(longitude);
     }
 
     private void sendApiRequest() {
@@ -179,7 +204,7 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
 
     @Override
     public void updateGeoCode(String s) {
-        String test=s;
+        String test = s;
         tv_contol_activity_geocoding.setText(s);
     }
 }
