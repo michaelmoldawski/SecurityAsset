@@ -24,7 +24,13 @@ import com.formation.appli.securityasset.Model.PhoneLocation.GpsLocation;
 import com.formation.appli.securityasset.Model.PhoneLocation.Phonelocation;
 import com.formation.appli.securityasset.Model.PhonePosition.Position;
 import com.formation.appli.securityasset.Model.PhonePosition.PositionSensor;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -33,7 +39,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class ControlActivity extends AppCompatActivity implements GpsLocation.IGpsLocation,
         DialogInterface.OnClickListener, View.OnClickListener,
         MapsFragment.MapsFragmentCallback, Switch.OnCheckedChangeListener,
-        AsyncGeoCoding.IAsyncGeoCoding {
+        AsyncGeoCoding.IAsyncGeoCoding,OnMapReadyCallback {
 
     public static TextView tv_control_gravity_values;
     public static TextView tvactuallocation;
@@ -50,6 +56,8 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
     public static LatLng mylocation;
     public static TextView tv_contol_activity_geocoding;
     public static FirebaseUser currentUser;
+    SupportMapFragment mapFragment;
+    FragmentManager fragManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +86,9 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
         TODO et la prendre du JSON pour activer les activiter google*/
         //String Api_Key= getString(R.string.google_api_key);
         tv_contol_activity_geocoding = (TextView) findViewById(R.id.geocoding);
+        fragManager =getSupportFragmentManager();
+        mapFragment= (SupportMapFragment) fragManager.findFragmentById(R.id.map2);
+        mapFragment.getMapAsync(this);
     }
 
     private void showMaps() {
@@ -202,14 +213,24 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
     private void sendApiRequest() {
         AsyncGeoCoding task = new AsyncGeoCoding();
         task.setCallback(this);
-        double test = latitude;
         String tasktoExecutes = String.valueOf(latitude) + "," + String.valueOf(longitude);
         task.execute(tasktoExecutes);
     }
 
     @Override
     public void updateGeoCode(String s) {
-        String test = s;
+
         tv_contol_activity_geocoding.setText(s);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        float zoom=18;
+        LatLng myPosition = new LatLng(latitude, longitude);
+        Marker help=googleMap.addMarker(new MarkerOptions().position(myPosition)
+                .title("You're here"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(myPosition,zoom));
+
+        help.showInfoWindow();
     }
 }
