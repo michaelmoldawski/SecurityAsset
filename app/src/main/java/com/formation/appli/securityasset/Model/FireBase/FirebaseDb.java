@@ -8,12 +8,12 @@ import com.google.firebase.database.Query;
  * Created by michael on 13-07-17.
  */
 
-public class FirebaseTools {
+public class FirebaseDb {
 
     FirebaseDatabase database;
     DatabaseReference myRef;
 
-    private FirebaseTools(FirebaseDatabase database) {
+    private FirebaseDb(FirebaseDatabase database) {
         this.database = FirebaseDatabase.getInstance();
         this.myRef = database.getReference("ID");
     }

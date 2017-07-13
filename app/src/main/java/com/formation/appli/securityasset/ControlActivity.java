@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.location.LocationManager;
-import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +25,6 @@ import com.formation.appli.securityasset.Model.PhoneLocation.Phonelocation;
 import com.formation.appli.securityasset.Model.PhonePosition.Position;
 import com.formation.appli.securityasset.Model.PhonePosition.PositionSensor;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -47,11 +45,11 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
     public static ImageButton alertButton;
     public static MapsFragment locationFragment;
     public static LocationManager locationManager;
-    private double latitude, longitude;
+    public static double latitude, longitude;
     public static Context context;
     public static LatLng mylocation;
     public static TextView tv_contol_activity_geocoding;
-
+    public static FirebaseUser currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +103,7 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
         } else {
             sensorManager.unregisterListener(positionsensor, positionSensor);
             Alerte = false;
+            saveInFirebase();
         }
     }
 
@@ -175,23 +174,29 @@ public class ControlActivity extends AppCompatActivity implements GpsLocation.IG
 
     }
 
-    private void saveInFirebase() {
+    public static void saveInFirebase() {
+
         // Write a message to the database
-        FirebaseUser currentUser = LogActivity.currentUser;
+        currentUser = LogActivity.currentUser;
         String mail = currentUser.getEmail();
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference mDatabase /*= database.getReference("ID")*/;
+        DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users/"
                 + currentUser.getUid()).child("email");
-
         mDatabase.setValue(mail);
+
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users/"
                 + currentUser.getUid()).child("latitude");
         mDatabase.setValue(latitude);
+
         mDatabase = FirebaseDatabase.getInstance().getReference().child("users/"
                 + currentUser.getUid()).child("longitude");
         mDatabase.setValue(longitude);
+
+        mDatabase = FirebaseDatabase.getInstance().getReference().child("users/"
+                + currentUser.getUid()).child("alerte");
+        mDatabase.setValue(Alerte);
     }
 
     private void sendApiRequest() {

@@ -28,7 +28,6 @@ public class PositionSensor implements SensorEventListener {
     private static long elapsedSeconds;
 
 
-
     private PositionSensor(Activity activity) {
         SensorManager = (SensorManager) activity.getSystemService(activity.SENSOR_SERVICE);
         positionSensorSelection();
@@ -61,20 +60,20 @@ public class PositionSensor implements SensorEventListener {
 
 
         if (Math.abs(ControlActivity.phonePosition.getY()) < 3f) {
-            elapsedSeconds=System.currentTimeMillis()-tStart;
-            if(elapsedSeconds>5000){
+            elapsedSeconds = System.currentTimeMillis() - tStart;
+            if (elapsedSeconds > 5000) {
                 ControlActivity.tvalertestatus.setText("Alerte");
-                ControlActivity.Alerte=true;
+                ControlActivity.Alerte = true;
+                ControlActivity.saveInFirebase();
             }
             ControlActivity.tv_control_gravity_values.setBackgroundResource(R.color.Alert_on_color);
-        }
-        else {
-            tStart=System.currentTimeMillis();
+
+        } else {
+            tStart = System.currentTimeMillis();
             ControlActivity.tvalertestatus.setText("You're fine");
             ControlActivity.tv_control_gravity_values.setBackgroundResource(R.color.Alert_off_color);
         }
     }
-
 
 
     @Override
@@ -109,7 +108,7 @@ public class PositionSensor implements SensorEventListener {
         return SensorManager;
     }
 
-    public  static Sensor getPositionSensor() {
+    public static Sensor getPositionSensor() {
         return positionSensor;
     }
 
