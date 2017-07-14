@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
+import com.formation.appli.securityasset.ControlActivity;
+
 
 /**
  * Created by michael on 09-07-17.
@@ -93,6 +95,7 @@ public class GpsLocation implements LocationListener {
     @Override
     public void onLocationChanged(Location location) {
         if (callback != null) {
+            if(ControlActivity.latitude==0 && ControlActivity.longitude==0)
             callback.getLocation(new Phonelocation(location.getLatitude(),location.getLongitude())
             );
 
